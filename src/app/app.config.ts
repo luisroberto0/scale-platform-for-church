@@ -61,12 +61,12 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     provideFirebaseApp(() =>
       initializeApp({
-        projectId: 'escalas-igreja',
-        appId: '1:839191571581:web:b4ae0fffcac567ea669514',
-        storageBucket: 'escalas-igreja.firebasestorage.app',
-        apiKey: 'AIzaSyASRBZta9YYcCXqGzyiWZDzOY0eNctB_kU',
-        authDomain: 'escalas-igreja.firebaseapp.com',
-        messagingSenderId: '839191571581',
+        projectId: environment.firebaseConfig.projectId,
+        appId: environment.firebaseConfig.appId,
+        storageBucket: environment.firebaseConfig.storageBucket,
+        apiKey: environment.firebaseConfig.apiKey,
+        authDomain: environment.firebaseConfig.authDomain,
+        messagingSenderId: environment.firebaseConfig.messagingSenderId,
       })
     ),
     provideAuth(() => getAuth()),
