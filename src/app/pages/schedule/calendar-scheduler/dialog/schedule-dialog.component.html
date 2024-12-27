@@ -1,0 +1,38 @@
+
+<button mat-icon-button (click)="onNoClick()" class="close">
+  <mat-icon>close</mat-icon>
+</button>
+<h2 mat-dialog-title>Agendar Disponibilidade </h2>
+
+    <div mat-dialog-content>
+      <form [formGroup]="data.form">
+        <mat-form-field appearance="fill">
+          <mat-label>Data</mat-label>
+          <input matInput [value]="data.form.get('date').value | date: 'dd/MM/yyyy'" readonly>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Categoria</mat-label>
+          <mat-select formControlName="category">
+            <mat-option *ngFor="let category of categories$ | async" [value]="category.id">
+              {{ category.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Tipo de Escala</mat-label>
+          <mat-select formControlName="scheduleType">
+            <mat-option *ngFor="let type of scheduleTypes$ | async" [value]="type.id">
+              {{ type.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Nota</mat-label>
+          <input matInput formControlName="notes" maxlength="90">
+        </mat-form-field>
+      </form>
+    </div>
+    <div mat-dialog-actions style="display: contents;">
+      <button mat-raised-button color="primary" type="submit" (click)="onNoClick()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [mat-dialog-close]="true" cdkFocusInitial>Salvar</button>
+    </div>

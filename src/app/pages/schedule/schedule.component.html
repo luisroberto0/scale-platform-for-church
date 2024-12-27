@@ -1,0 +1,85 @@
+<div class="container">
+  <button mat-icon-button (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <h2>Cadastro de Escalas</h2>
+  <p class="date-range-info">Mostrando escalas dos últimos 15 dias e próximos 30 dias</p>
+  <button *ngIf="userRole !== 'viewer'" mat-raised-button color="primary" (click)="openScheduleForm()">Adicionar Escala</button>
+
+  <div style="display: flex; ">
+
+    <mat-form-field appearance="fill" style="flex: 1;">
+      <mat-label>Tipo de Escala</mat-label>
+      <mat-select [(value)]="selectedScheduleType" (selectionChange)="onScheduleTypeChange($event)">
+        <mat-option *ngFor="let scheduleType of scheduleTypes$ | async" [value]="scheduleType">
+          {{ scheduleType.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-icon-button color="accent" *ngIf="selectedScheduleType?.description" [ngStyle]="{'color':'white'}" [matTooltip]="selectedScheduleType?.description" #tooltip="matTooltip" (click)="tooltip.toggle()">
+      <mat-icon>description</mat-icon>
+    </button>
+  </div>
+
+  <div class="table-container">
+    <mat-table [dataSource]="(schedules$ | async) || [] | groupSchedules">
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef> Data </mat-header-cell>
+        <mat-cell *matCellDef="let group">
+          <span class="mobile-label">Data:</span> {{ group.date | date: 'dd/MM/yyyy' }}
+        </mat-cell>
+      </ng-container>
+      <ng-container *ngFor="let category of categories$ | async" [matColumnDef]="category.name">
+        <mat-header-cell *matHeaderCellDef> <span style="color: {{category?.color}} !important;" [matTooltip]="category?.description" #tooltip="matTooltip" (click)="tooltip.toggle()" style="display: flex;"> {{ category.name }} <mat-icon *ngIf="category?.description" style="font-size: 18px;">info</mat-icon></span> </mat-header-cell>
+        <mat-cell *matCellDef="let group">
+          <ng-container *ngFor="let schedule of group.schedules">
+            <ng-container *ngIf="schedule.category === category.id">
+              <span class="mobile-label" style="color: {{category?.color}} !important;" [matTooltip]="category?.description" #tooltip="matTooltip" (click)="tooltip.toggle()" style="display: flex;"> {{ category.name }} <mat-icon *ngIf="category?.description" style="font-size: 18px;">info</mat-icon>:</span>
+              <span style="color: {{category?.color}} !important;">{{ getUserName(schedule.userId) | async }} - {{ schedule.notes }} {{ schedule.confirmed ? 'Confirmado' : 'Pendente' }}</span>
+
+              <!-- Add confirmation buttons -->
+              <ng-container *ngIf="schedule.userId === currentUserId && !schedule.confirmed">
+                <button mat-icon-button color="primary" (click)="confirmSchedule(schedule.id, true)" matTooltip="Confirmar">
+                  <mat-icon>check_circle</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="confirmSchedule(schedule.id, false)" matTooltip="Recusar">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </ng-container>
+
+              <!-- Existing edit/delete buttons -->
+              <button *ngIf="userRole === 'publisher'" mat-icon-button (click)="openScheduleForm(schedule)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button *ngIf="userRole === 'publisher'" mat-icon-button color="warn" (click)="deleteSchedule(schedule.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </ng-container>
+          </ng-container>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="getColumnNames(categories$ | async)"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: getColumnNames(categories$ | async);"></mat-row>
+    </mat-table>
+  </div>
+</div>
+
+<style>
+  .mobile-label {
+    display: none;
+    font-weight: bold;
+  }
+
+  @media (max-width: 600px) {
+    .mobile-label {
+      display: inline;
+    }
+  }
+
+  .date-range-info {
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+</style>

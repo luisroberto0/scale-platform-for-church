@@ -1,0 +1,71 @@
+<div class="container">
+  <button mat-icon-button (click)="goBack()" class="back-button">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <div class="header-actions">
+    <h2>Usuários</h2>
+    <div class="header-buttons">
+      <button mat-raised-button color="primary" (click)="openUserDialog()">
+        <mat-icon>add</mat-icon>
+        Novo Usuário
+      </button>
+      <button mat-raised-button color="accent" (click)="openBulkImportDialog()">
+        <mat-icon>upload_file</mat-icon>
+        Importar Lista
+      </button>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <mat-table [dataSource]="(users$ | async) || []">
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <span class="mobile-label">Nome:</span>
+          {{ user.name }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <span class="mobile-label">Email:</span>
+          {{ user.email }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="role">
+        <mat-header-cell *matHeaderCellDef> Perfil </mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <span class="mobile-label">Perfil:</span>
+          {{ getRoleName(user.role) }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <span class="mobile-label">Ações:</span>
+          <button mat-icon-button (click)="editUser(user)" matTooltip="Editar">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="resetPassword(user.email)" matTooltip="Redefinir senha">
+            <mat-icon>lock_reset</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteUser(user)" matTooltip="Excluir">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+</div>
+
+<style>
+.back-button {
+  margin-bottom: 16px;
+}
+</style>

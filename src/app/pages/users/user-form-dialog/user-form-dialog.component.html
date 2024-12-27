@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>{{data.editingUser ? 'Editar' : 'Cadastrar'}} Usuário</h2>
+<mat-dialog-content>
+  <form [formGroup]="data.userForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Perfil</mat-label>
+      <mat-select formControlName="role">
+        <mat-option value="admin">Adminitrador</mat-option>
+        <mat-option value="publisher">Coordenador de Escalas</mat-option>
+        <mat-option value="viewer">Cooperador/Escalado</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Categoria</mat-label>
+      <mat-select formControlName="category">
+        <mat-option value="">Selecione</mat-option>
+        <mat-option *ngFor="let category of data.categories$ | async" [value]="category.id">
+          {{ category.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Tipo de Escala</mat-label>
+      <mat-select formControlName="scheduleTypeId">
+        <mat-option value="">Selecione</mat-option>
+        <mat-option *ngFor="let type of data.scheduleTypes$ | async" [value]="type.id">
+          {{ type.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!data.userForm.valid">
+    {{data.editingUser ? 'Atualizar' : 'Adicionar'}}
+  </button>
+  <!-- <button mat-raised-button type="button" (click)="editMode = false; currentTypeId = null; scheduleTypeForm.reset()">
+    Cancelar
+  </button> -->
+</mat-dialog-actions>

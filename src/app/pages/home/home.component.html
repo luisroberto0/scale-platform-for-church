@@ -1,0 +1,29 @@
+<div class="page-wrapper">
+  <div class="container">
+    <div class="logo">
+      <img src="logo.svg" alt="Logo Sistema de Escalas">
+    </div>
+    <nav class="nav-wrapper" *ngIf="userRole">
+      <input type="checkbox" id="menu-toggle">
+      <label for="menu-toggle" class="menu-icon">
+        <span class="hamburger"></span>
+      </label>
+      <ul class="menu">
+        <li><a routerLink="/">Home</a></li>
+        <li><a routerLink="/schedules">Escalas</a></li>
+        <li><a routerLink="/schedules/calendar">Agenda de Disponibilidade</a></li>
+        <li><a routerLink="/users" *ngIf="userRole == 'admin'">Usuários</a></li>
+        <li><a routerLink="/categories" *ngIf="userRole == 'publisher' || userRole == 'admin'">Categorias</a></li>
+        <li><a routerLink="/schedule-types" *ngIf="userRole == 'admin'">Tipos de Escala</a></li>
+        <li><a href="#" (click)="logout()">Sair</a></li>
+      </ul>
+    </nav>
+    <div class="login-section" *ngIf="!userRole">
+      <button class="login-btn" (click)="goToLogin()">Fazer Login</button>
+    </div>
+    <div class="content">
+      <h1>Sistema de Escalas</h1>
+      <p>Gerencie suas escalas de forma simples e eficiente</p>
+    </div>
+  </div>
+</div>

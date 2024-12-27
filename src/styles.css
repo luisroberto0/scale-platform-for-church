@@ -1,0 +1,180 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+  color: white;
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
+}
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2 {
+  font-size: 2.5em;
+  font-weight: 700;
+  margin-bottom: 20px;
+  background: linear-gradient(45deg, #fff 0%, #8b2929 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.mat-mdc-raised-button.mat-primary {
+  background-color: #8b2929 !important;
+  color: #fff !important;
+}
+
+mat-table {
+  background: #0f0f0fb4 !important;
+  /* backdrop-filter: blur(10px); */
+  border-radius: 8px;
+}
+
+mat-cell, mat-header-cell {
+  color: white !important;
+}
+
+mat-row:hover {
+  background: rgb(24, 22, 22) !important;
+}
+
+.mdc-dialog--open .mat-mdc-dialog-surface, .mdc-dialog--closing .mat-mdc-dialog-surface {
+  transform: none;
+  padding: 24px;
+}
+.mat-mdc-dialog-surface {
+  background: #171717 !important;
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  color: #fff !important
+}
+
+.mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background, .mdc-checkbox__ripple {
+  background-color: #8b2929 !important;
+  border-color: #8b2929 !important;
+}
+
+.mat-internal-form-field>label {
+  color: white !important;
+}
+
+mat-list-item span span {
+  color: white !important;
+}
+
+.mat-mdc-dialog-component-host {
+  display: flow-root !important;
+}
+
+.close {
+  float: inline-end;
+  z-index: 1;
+}
+
+
+.mat-display-medium, .mat-typography .mat-display-medium, .mat-typography h2 {
+  font: 400 1.812rem / 2.25rem Roboto, sans-serif !important;
+  letter-spacing: 0;
+  margin: 0 0 .5em;
+}
+
+
+
+
+/*sssss*/
+
+
+.container {
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+mat-checkbox {
+  margin-bottom: 16px;
+}
+
+button {
+  display: block;
+}
+
+mat-table {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.table-container {
+  overflow-x: auto;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 20px;
+}
+
+mat-cell, mat-header-cell {
+  color: white !important;
+}
+
+mat-row:hover {
+  background: rgba(139, 41, 41, 0.1);
+}
+
+mat-cell {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.date-range-info {
+  color: rgb(255 142 142 / 54%) !important;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+button[mat-raised-button] {
+  margin-bottom: 20px;
+}
+.mobile-label{
+  display: none !important;
+}
+@media (max-width: 920px) {
+  .mobile-label{
+    display: flex !important;
+  }
+  mat-header-cell, mat-cell {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  mat-header-cell {
+    white-space: nowrap;
+  }
+
+  mat-cell {
+    display: flex;
+    white-space: nowrap;
+    flex-wrap: wrap;
+  }
+
+  mat-row {
+    display: block;
+  }
+
+  mat-header-row {
+    display: none;
+  }
+
+  mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+    padding-left: 8px;
+  }
+}

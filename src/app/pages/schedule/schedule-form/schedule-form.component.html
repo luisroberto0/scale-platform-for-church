@@ -1,0 +1,42 @@
+<button mat-icon-button (click)="dialogRef.close()" class="close">
+  <mat-icon>close</mat-icon>
+</button>
+<h2>{{ isEditing ? 'Editar' : 'Cadastro de' }} Escalas</h2>
+<form [formGroup]="scheduleForm" (ngSubmit)="addSchedule()">
+  <mat-form-field appearance="fill">
+    <mat-label>Data</mat-label>
+    <input matInput formControlName="date" type="date">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Categoria</mat-label>
+    <mat-select formControlName="category">
+      <mat-option *ngFor="let category of categories$ | async" [value]="category.id">
+        {{ category.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Tipo de Escala</mat-label>
+    <mat-select formControlName="scheduleType">
+      <mat-option *ngFor="let scheduleType of scheduleTypes$ | async" [value]="scheduleType.id">
+        {{ scheduleType.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Usuário</mat-label>
+    <mat-select formControlName="userId">
+      <mat-option *ngFor="let user of users$ | async" [value]="user.email">
+        {{ user.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Notas</mat-label>
+    <input matInput formControlName="notes" maxlength="90">
+  </mat-form-field>
+  <mat-checkbox formControlName="confirmed">Confirmado</mat-checkbox> <br />
+  <button mat-raised-button color="primary" type="submit">{{ isEditing ? 'Salvar' : 'Adicionar' }} Escala</button>
+</form>
+
+<mat-header-row></mat-header-row>

@@ -1,0 +1,35 @@
+
+<div class="container">
+  <button mat-icon-button (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <h2>Cadastro de Tipos de Escala</h2>
+  <form [formGroup]="scheduleTypeForm" (ngSubmit)="addScheduleType()">
+    <mat-form-field appearance="fill">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Descrição</mat-label>
+      <input matInput formControlName="description">
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">
+      {{editMode ? 'Atualizar' : 'Adicionar'}} Tipo de Escala
+    </button>
+    <button *ngIf="editMode" mat-raised-button type="button" (click)="editMode = false; currentTypeId = null; scheduleTypeForm.reset()">
+      Cancelar
+    </button>
+  </form>
+
+  <mat-list>
+    <mat-list-item *ngFor="let type of scheduleTypes$ | async">
+      <button mat-icon-button (click)="editScheduleType(type)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteScheduleType(type.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <span  [matTooltip]="type.description" #tooltip="matTooltip" (click)="tooltip.toggle()">{{ type.name }}</span>
+    </mat-list-item>
+  </mat-list>
+</div>

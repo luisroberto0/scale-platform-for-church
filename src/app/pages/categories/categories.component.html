@@ -1,0 +1,42 @@
+<div class="container">
+  <button mat-icon-button (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <h2>Cadastro de Categorias</h2>
+  <form [formGroup]="categoryForm" (ngSubmit)="addCategory()">
+    <mat-form-field appearance="fill">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Descrição</mat-label>
+      <input matInput formControlName="description">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Cor</mat-label>
+      <input matInput formControlName="color" type="color">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Tipo de Escala</mat-label>
+      <mat-select formControlName="scheduleType">
+        <mat-option *ngFor="let scheduleType of scheduleTypes$ | async" [value]="scheduleType.id">
+          {{ scheduleType.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">
+      {{editMode ? 'Atualizar' : 'Adicionar'}} Categoria
+    </button>
+  </form>
+  <mat-list cdkDropList (cdkDropListDropped)="drop($event)">
+    <mat-list-item *ngFor="let category of categories$ | async; let i = index" cdkDrag>
+      <button mat-icon-button (click)="editCategory(category)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteCategory(category.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <span style="color: {{category?.color}} !important" [matTooltip]="category.description" #tooltip="matTooltip" (click)="tooltip.toggle()">{{ category.name }}</span>
+    </mat-list-item>
+  </mat-list>
+</div>

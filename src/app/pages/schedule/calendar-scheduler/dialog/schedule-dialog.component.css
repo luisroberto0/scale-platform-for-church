@@ -1,0 +1,16 @@
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+button {
+  margin-top: 16px;
+}
+
+.close {
+  float: inline-end;
+  z-index: 1;
+}
+.mat-mdc-dialog-component-host {
+  display: flow-root;
+}

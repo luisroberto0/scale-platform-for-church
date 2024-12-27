@@ -1,0 +1,95 @@
+<div class="container">
+  <button mat-icon-button (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <h2>Agendar Disponibilidade</h2>
+  <div class="calendar">
+    <div class="calendar-header">
+      <button mat-icon-button class="icon-color" (click)="previousMonth()">
+        <mat-icon>arrow_back_ios</mat-icon>
+      </button>
+      <span>{{ getFormattedMonthYear() }}</span>
+      <button mat-icon-button class="icon-color" (click)="nextMonth()">
+        <mat-icon>arrow_forward_ios</mat-icon>
+      </button>
+    </div>
+    <div class="calendar-grid">
+      <div class="days" *ngFor="let day of getDaysInMonth()" [class.event]="isEventDate(day)">
+        <div class="day-header">
+          <span class="weekday">{{ getWeekdayAbbreviation(day) }}</span>
+          <span class="day-number">{{ day.getDate() }}</span>
+        </div>
+
+        <div class="event-detail">
+          <button mat-icon-button class="icon-color" *ngIf="isEventDate(day)" (click)="openEventsDialog(events, day)">
+            <mat-icon>event_note</mat-icon>
+          </button>
+          <button mat-icon-button class="icon-color" *ngIf="isFutureDate(day)" (click)="openDialog(day)">
+            <mat-icon>person_add</mat-icon>
+          </button>
+        </div>
+
+
+        <!-- <ng-container *ngFor="let event of events">
+          <ng-container *ngIf="event.date === day.toISOString().split('T')[0]">
+            <div class="event-detail">
+              <span>{{ getUserName(event.userId) | async }}</span>
+              <span>{{ (getCategoryNames(event.category) | async)?.name }}</span>
+            </div>
+          </ng-container>
+        </ng-container> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isDivVisible" class="dialog-backdrop" (click)="closeEventsDialog()"></div>
+<div *ngIf="isDivVisible" class="dialog-container">
+  <button mat-icon-button (click)="closeEventsDialog()" class="close">
+    <mat-icon>close</mat-icon>
+  </button>
+  <h2>Disponível dia {{selectedDate | date: 'dd/MM/yyyy'}}</h2>
+  <!-- <form [formGroup]="scheduleForm">
+    Adicione seus campos aqui
+  </form> -->
+  <ng-container  *ngFor="let event of selectedEvents" >
+    <div class="selected-event" *ngIf="isEventOnSelectedDate(event, selectedDate)" style="background-color: {{(getCategoryNames(event?.category) | async)?.color ? (getCategoryNames(event.category) | async)?.color : '#000'}}">
+      {{ getUserName(event.userId) | async }} - {{ (getCategoryNames(event.category) | async)?.name }} {{ event.notes ? '- ' + event.notes : '' }}
+      <ng-container *ngIf="event.userId === currentUser.email && !event.confirmed && event?.approved">
+        <div>
+          <button mat-icon-button color="primary" (click)="confirmSchedule(event.id, true)" matTooltip="Confirmar">
+            <mat-icon>check_circle</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="confirmSchedule(event.id, false)" matTooltip="Recusar">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="userRole == 'publisher' && event.confirmed && !event?.approved">
+        <div>
+          <button mat-icon-button color="primary" (click)="approveSchedule(event.id, true, true)" matTooltip="Aprovar">
+            <mat-icon>check_circle</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="confirmSchedule(event.id, false)" matTooltip="Recusar">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="event.userId === currentUser.email && event.confirmed && !event?.approved && isFutureDate(selectedDate)">
+        <button mat-icon-button color="warn" (click)="deleteSchedule(event.id)" matTooltip="Excluir">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="userRole == 'publisher' && event.confirmed && event?.approved && isFutureDate(selectedDate)">
+        <button mat-icon-button color="warn" (click)="deleteSchedule(event.id)" matTooltip="Excluir">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </ng-container>
+
+
+    </div>
+  </ng-container>
+
+
+</div>

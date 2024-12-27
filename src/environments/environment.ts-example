@@ -1,0 +1,11 @@
+export const environment = {
+  production: false,
+  firebaseConfig: {
+    projectId: 'alternar-com-o-seu-project-id',
+    appId: 'alternar-com-o-seu-app-id',
+    storageBucket: 'alternar-com-o-seu-bucket.appspot.com',
+    apiKey: 'alternar-com-o-seu-api-key',
+    authDomain: 'alternar-com-o-seu-auth-domain.firebaseapp.com',
+    messagingSenderId: 'alternar-com-o-seu-messaging-sender-id',
+  }
+};
