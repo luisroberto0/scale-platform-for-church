@@ -79,24 +79,40 @@ export class ScheduleFormComponent implements OnInit {
     if (this.scheduleForm.valid) {
       const selectedDate = new Date(this.scheduleForm.value.date);
       const currentDate = new Date();
-      currentDate.setHours(0, 0, 0, 0); // Set current date time to midnight for comparison
+      currentDate.setHours(0, 0, 0, 0);
 
       if (selectedDate < currentDate) {
         this.toastr.error('A data deve ser uma data futura.');
         return;
       }
 
-      if (this.isEditing) {
-        this.scheduleService.updateSchedule(this.scheduleId, this.scheduleForm.value).subscribe(() => {
-          this.toastr.success('Escala atualizada com sucesso!');
-        }, (error) => { this.toastr.error('Error updating schedule: ' + error); });
-      } else {
-        this.scheduleService.addSchedule(this.scheduleForm.value).subscribe(() => {
-          this.toastr.success('Escala adicionada com sucesso!');
-        }, (error) => { this.toastr.error('Error updating schedule: ' + error); });
-      }
-      this.scheduleForm.reset();
-      this.dialogRef.close();
+      // Check for existing schedule
+      this.scheduleService.checkExistingSchedule(
+        this.scheduleForm.value.userId,
+        this.scheduleForm.value.date
+      ).subscribe(exists => {
+        if (this.isEditing) {
+          this.scheduleService.updateSchedule(this.scheduleId, this.scheduleForm.value).subscribe(() => {
+            this.toastr.success('Escala atualizada com sucesso!');
+            this.scheduleForm.reset();
+            this.dialogRef.close();
+          }, (error) => {
+            this.toastr.error('Error updating schedule: ' + error);
+          });
+        } else {
+          if (exists) {
+            this.toastr.error('Este usuário já está escalado para esta data.');
+            return;
+          }
+          this.scheduleService.addSchedule(this.scheduleForm.value).subscribe(() => {
+            this.toastr.success('Escala adicionada com sucesso!');
+            this.scheduleForm.reset();
+            this.dialogRef.close();
+          }, (error) => {
+            this.toastr.error('Error adding schedule: ' + error);
+          });
+        }
+      });
     }
   }
 }

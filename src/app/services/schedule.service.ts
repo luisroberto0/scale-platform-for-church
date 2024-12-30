@@ -16,4 +16,6 @@ export abstract class ScheduleService {
   abstract confirmSchedule(scheduleId: string, confirmed: boolean): Observable<void>;
 
   abstract approveSchedule(scheduleId: string, confirmed: boolean, approved: boolean): Observable<void>;
+
+  abstract checkExistingSchedule(userId: string, date: string): Observable<boolean>;
 }
