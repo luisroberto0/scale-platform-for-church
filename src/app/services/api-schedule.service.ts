@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, updateDoc, query, where } from '@angular/fire/firestore';
 import { ScheduleService } from './schedule.service';
-import { from } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -69,5 +69,14 @@ export class ApiScheduleService implements ScheduleService {
   approveSchedule(scheduleId: string, confirmed: boolean, approved: boolean) {
     const scheduleDoc = doc(this.firestore, `schedules/${scheduleId}`);
     return from(updateDoc(scheduleDoc, { confirmed, approved }));
+  }
+
+  checkExistingSchedule(userId: string, date: string): Observable<boolean> {
+      return this.getSchedules().pipe(
+        map((schedules: any) => schedules.some((schedule: any) =>
+          schedule.userId === userId &&
+          schedule.date === date
+        ))
+      );
   }
 }

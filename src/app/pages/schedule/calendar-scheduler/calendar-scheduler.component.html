@@ -24,7 +24,7 @@
           <button mat-icon-button class="icon-color" *ngIf="isEventDate(day)" (click)="openEventsDialog(events, day)">
             <mat-icon>event_note</mat-icon>
           </button>
-          <button mat-icon-button class="icon-color" *ngIf="isFutureDate(day)" (click)="openDialog(day)">
+          <button mat-icon-button class="icon-color" *ngIf="isFutureDate(day) && !hasScheduleForDate(day)" (click)="openDialog(day)">
             <mat-icon>person_add</mat-icon>
           </button>
         </div>

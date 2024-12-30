@@ -51,7 +51,7 @@ export class ScheduleComponent implements OnInit {
     this.scheduleTypes$ = this.scheduleTypeService.getScheduleTypes();
 
     this.authService.getUser().subscribe((user: any) => {
-      if (user && (user.role === 'viewer')) {
+      if (user && (user.role === 'viewer' || user.role === 'publisher' || user.role === 'admin')) {
         // Convert null to undefined if no scheduleTypeId exists
         this.userScheduleType = user.scheduleTypeId || undefined;
         this.selectedScheduleType = this.userScheduleType;
@@ -202,5 +202,12 @@ export class ScheduleComponent implements OnInit {
 
   goBack() {
     window.history.back();
+  }
+
+  isFutureDate(date: string): boolean {
+    const selectedDate = new Date(date);
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    return selectedDate >= currentDate;
   }
 }

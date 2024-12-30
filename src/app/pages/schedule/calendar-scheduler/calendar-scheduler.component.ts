@@ -89,20 +89,36 @@ export class CalendarSchedulerComponent implements OnInit {
     });
   }
 
+  // Add this new method
+  checkExistingSchedule(date: string): boolean {
+    return this.events.some(event =>
+      event.date === date &&
+      event.userId === this.currentUser.email
+    );
+  }
+
   submitForm() {
     const selectedDate = new Date(this.scheduleForm.value.date);
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); // Set current date time to midnight for comparison
+    currentDate.setHours(0, 0, 0, 0);
 
     if (selectedDate < currentDate) {
       this.toastr.error('A data deve ser uma data futura.');
       return;
     }
-    console.log(this.formatDate(this.scheduleForm.value.date));
+
+    const formattedDate = this.formatDate(this.scheduleForm.value.date);
+
+    // Add this check before submitting
+    if (this.checkExistingSchedule(formattedDate)) {
+      this.toastr.error('Você já está escalado para esta data.');
+      return;
+    }
+
     if (this.scheduleForm.valid) {
       const scheduleData = {
         ...this.scheduleForm.value,
-        date: this.formatDate(this.scheduleForm.value.date),
+        date: formattedDate,
         userId: this.currentUser.email,
         confirmed: true,
         approved: this.userRole !== 'publisher' ? false : true
@@ -236,6 +252,14 @@ export class CalendarSchedulerComponent implements OnInit {
 
   goBack() {
     window.history.back();
+  }
+
+  hasScheduleForDate(date: Date): boolean {
+    const dateString = date.toISOString().split('T')[0]; // Convert Date to YYYY-MM-DD format
+    return this.events.some(event =>
+      event.date === dateString &&
+      event.userId === this.currentUser.email
+    );
   }
 }
 
