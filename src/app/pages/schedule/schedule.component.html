@@ -49,10 +49,15 @@
               </ng-container>
 
               <!-- Existing edit/delete buttons -->
-              <button *ngIf="userRole === 'publisher'" mat-icon-button (click)="openScheduleForm(schedule)">
+              <button *ngIf="(userRole === 'publisher' || userRole === 'admin') && isFutureDate(group.date)"
+                      mat-icon-button
+                      (click)="openScheduleForm(schedule)">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button *ngIf="userRole === 'publisher'" mat-icon-button color="warn" (click)="deleteSchedule(schedule.id)">
+              <button *ngIf="(userRole === 'publisher' || userRole === 'admin') && isFutureDate(group.date)"
+                      mat-icon-button
+                      color="warn"
+                      (click)="deleteSchedule(schedule.id)">
                 <mat-icon>delete</mat-icon>
               </button>
             </ng-container>
